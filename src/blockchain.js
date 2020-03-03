@@ -122,7 +122,7 @@ class Blockchain {
                 let sub_time = parseInt(message.split(':')[1]);
                 let cur_time = parseInt(new Date().getTime().toString().slice(0, -3));
                 let time_diff = cur_time - sub_time;
-                if (time_diff <= (5*60*1000)) {
+                if (time_diff <= (5*60)) {
                     let isValid = bitcoinMessage.verify(message, address, signature);
                     if (isValid) {
                         let block = new BlockClass.Block({ address, signature, message, star });
