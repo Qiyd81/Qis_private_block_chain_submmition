@@ -225,41 +225,43 @@ class Blockchain {
         let self = this;
         let errorLog = [];
         return new Promise(async (resolve, reject) => {
-            // try {
-            //     for (let block of self.chain) {
-            //         if (block.height > 0) {
-            //             await block.validate().then((result) => {
-            //                 if (block.previousBlockHash !== self.chain[block.height - 1].hash) {
-            //                     errorLog.push(block.height + "block's previousBlockHash" + "is not equal to" + (block.height - 1) + "block's hash");
-            //                 }
-            //             }).catch((error) => {
-            //                 errorLog.push(block.height + "block fails validate");
-            //             });
-            //         }
-            //     }
-            // }
             try {
-                let chainHeight = await self.getChainHeight();
-                for (let i = 0; i <= chainHeight; i++) {
-                    let block = await self.getBlockByHeight(i);
-                    let blockHash = block.hash;
-                    let nextBlock = await self.getBlockByHeight(i + 1);
-                    let vBlock = await block.validate();
-                    if(vBlock != true){
-                        errorLog.push(i);
-                    };
-                    if(i != chainHeight){
-                        let prevHash = nextBlock.previousBlockHash;
-                        if (blockHash !== prevHash) {
-                            errorLog.push(i);
-                        };
-                    };
-                };
-                errorLog = [ ...new Set(errorLog) ];
-                resolve('Block errors = ' + errorLog.length + 'Blocks: ' + errorLog);
+                for (let block of self.chain) {
+                    if (block.height > 0) {
+                        await block.validate().then((result) => {
+                            if (block.previousBlockHash !== self.chain[block.height - 1].hash) {
+                                errorLog.push(block.height + "block's previousBlockHash" + "is not equal to" + (block.height - 1) + "block's hash");
+                            }
+                        }).catch((error) => {
+                            errorLog.push(block.height + "block fails validate");
+                        });
+                    }
+                }
             } catch (error) {
                 reject(error);
             }
+            // try {
+            //     let chainHeight = await self.getChainHeight();
+            //     for (let i = 0; i <= chainHeight; i++) {
+            //         let block = await self.getBlockByHeight(i);
+            //         let blockHash = block.hash;
+            //         let nextBlock = await self.getBlockByHeight(i + 1);
+            //         let vBlock = await block.validate();
+            //         if(vBlock != true){
+            //             errorLog.push(i);
+            //         };
+            //         if(i != chainHeight){
+            //             let prevHash = nextBlock.previousBlockHash;
+            //             if (blockHash !== prevHash) {
+            //                 errorLog.push(i);
+            //             };
+            //         };
+            //     };
+            //     errorLog = [ ...new Set(errorLog) ];
+            //     resolve('Block errors = ' + errorLog.length + 'Blocks: ' + errorLog);
+            // } catch (error) {
+            //     reject(error);
+            // }
         });
     }
 
