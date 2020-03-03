@@ -237,6 +237,7 @@ class Blockchain {
                         });
                     }
                 }
+                resolve(errorLog);
             } catch (error) {
                 reject(error);
             }
