@@ -47,7 +47,7 @@ class Block {
             self.hash = currHash;
 
             // Comparing if the hashes changed
-            if (currHash != newHash) {
+            if (currHash !== newHash) {
                 // Returning the Block is not valid
                 reject("Not valid this Block!");
             } else {
